@@ -1,9 +1,10 @@
 (require 'packages)
 (install-packages '(clojure-mode
                     cider
+		    ac-cider
                     paredit))
 
-;; cljojure stuff
+
 (defmacro defclojureface (name color desc &optional others)
   `(defface ,name '((((class color)) (:foreground ,color ,@others))) ,desc :group 'faces))
 
@@ -63,5 +64,19 @@
     (add-to-list 'grep-find-ignored-files "target")
     (add-to-list 'grep-find-ignored-files "*.class")))
 
+(require 'ac-cider)
+; (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+
+(defun set-auto-complete-as-completion-at-point-function ()
+  (setq completion-at-point-functions '(auto-complete)))
+
+;; (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq cider-repl-use-clojure-font-lock t)
+;; ;; clojure stuff
+(require 'company)
+(add-hook 'cider-repl-mode-hook 'company-mode)
+(add-hook 'cider-mode-hook 'company-mode)
 
 (provide 'init-clj)
